@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Apply, Home } from './pages';
+import { Apply, Home, NotFound } from './pages';
 import { NavBar } from './components';
 import Admin from './pages/Admin';
 function App() {
@@ -14,6 +14,7 @@ function App() {
           <Route path='/apply' element={<Apply />} />
           <Route path={'/admin'} element={<Admin />} />
           <Route path={'/admin/applications'} element={<Admin />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </div>
     </>

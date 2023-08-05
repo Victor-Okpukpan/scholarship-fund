@@ -66,7 +66,7 @@ export default function Apply() {
     };
     setLoading(true);
     try {
-      const res = await axios.post(backendUrl + '/api/apply', { ...data });
+      const res = await axios.post(backendUrl + '/api/submit', { ...data });
       console.log(res);
       setLoading(false);
       setApplicationId(res.data.id);

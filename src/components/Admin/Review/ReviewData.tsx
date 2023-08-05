@@ -5,8 +5,21 @@ import { backendUrl } from '../../../../config/constants';
 import axios, { AxiosResponse } from 'axios';
 import { useAuth } from '../../../contexts/AuthContext';
 import ErrorAlert from '../../../atoms/ErrorAlert';
+import ImageWithPlaceholder from './ImageWithPlaceholder';
 
-type Docs = {};
+type Docs = {
+  admission_letter: string | null;
+  applicant_picture: string | null;
+  attestation_letter: string | null;
+  birth_certificate_declaration: string | null;
+  certificate_of_origin: string | null;
+  created_at: string | null;
+  fee_receipt: string | null;
+  fee_schedule: string | null;
+  id: string | null;
+  scholarship_application_id: string | null;
+  updated_at: string | null;
+};
 
 function ReviewData({ data }: { data: TableData | null }) {
   const { token, handleUnauthorized } = useAuth();
@@ -20,13 +33,13 @@ function ReviewData({ data }: { data: TableData | null }) {
     setError(null);
 
     try {
-      const response: AxiosResponse<Docs> = await axios.get(
+      const response: AxiosResponse<{ docs: Docs }> = await axios.get(
         backendUrl + '/api/docs?id=' + id,
         {
           headers: { Authorization: 'Bearer ' + token },
         }
       );
-      setDocs(response.data);
+      setDocs(response.data.docs);
     } catch (error) {
       setError('Error fetching data');
       console.error('Error fetching data:', error);
@@ -59,6 +72,24 @@ function ReviewData({ data }: { data: TableData | null }) {
       <div className='flex py-5 md:text-lg flex-col gap-8'>
         <h2>{loading ? <i>Loading Documents</i> : 'Documents'}</h2>
         {error && !loading && <ErrorAlert>Error fetching documents</ErrorAlert>}
+
+        {docs &&
+          Object.keys(docs!).map((key, idx) => (
+            <div key={key} className='flex flex-col py-2 gap-4'>
+              <div className='flex gap-2'>
+                <span>{idx + 1}.</span>
+                <div className='capitalize text-sm font-semibold'>
+                  {key.split('_').join(' ')}
+                </div>
+              </div>
+              {docs[key] !== null && (
+                <ImageWithPlaceholder
+                  imageUrl={docs[key]}
+                  altText={key.split('_').join(' ')}
+                />
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );
