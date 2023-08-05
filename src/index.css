@@ -104,3 +104,8 @@ a,
 .ldio-0k82hkrsbtnn div {
   box-sizing: content-box;
 }
+
+.rodal-dialog {
+  width: 90% !important;
+  max-width: 500px;
+}
